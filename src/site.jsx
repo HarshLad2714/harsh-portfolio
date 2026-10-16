@@ -22,6 +22,7 @@ import {
   skillGroups,
   ticker,
 } from "./data"
+import { techIcons } from "./techIcons"
 
 function GitHubIcon() {
   return (
@@ -263,18 +264,6 @@ function Constellation() {
   return <canvas ref={canvasRef} className="constellation" aria-hidden="true" />
 }
 
-const skillTiles = [
-  ["Laravel", "Lv"],
-  ["PHP", "Ph"],
-  ["MySQL", "My"],
-  ["PostgreSQL", "Pg"],
-  ["Vue.js", "Vu"],
-  ["React", "Re"],
-  ["AWS", "Aw"],
-  ["Docker", "Dk"],
-  ["CI/CD", "Ci"],
-  ["OWASP", "Ow"],
-]
 
 function CountUp({ value, suffix = "" }) {
   const [count, setCount] = useState(() =>
@@ -502,9 +491,13 @@ export function Experience() {
           </div>
           <p>Based in Surat. The through-line is Laravel delivery, client communication, and people.</p>
         </Reveal>
-        <div>
+        <div className="job-stack">
           {experience.map((job, index) => (
-            <Reveal as="article" className="job" delay={Math.min(index * 40, 160)} key={`${job.company}-${job.dates}`}>
+            <article
+              className="job"
+              key={`${job.company}-${job.dates}`}
+              style={{ "--stack": index, zIndex: index + 1 }}
+            >
               <div>
                 <time>{job.dates}</time>
                 {job.current && <span className="now">Now</span>}
@@ -520,7 +513,7 @@ export function Experience() {
                   ))}
                 </ul>
               </div>
-            </Reveal>
+            </article>
           ))}
         </div>
       </div>
@@ -541,11 +534,13 @@ export function Skills() {
           <p>Laravel is home. Around it: the data, the frontend, the servers, and the tools the team already lives in.</p>
         </Reveal>
         <div className="tile-grid">
-          {skillTiles.map(([name, mark], index) => (
-            <Reveal as="article" className="skill-tile" delay={index * 45} key={name}>
-              <span>{mark}</span>
-              <strong>{name}</strong>
-            </Reveal>
+          {techIcons.map((icon) => (
+            <article className="skill-tile" key={icon.name} style={{ "--brand": icon.color }}>
+              <svg className="tech-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d={icon.path} />
+              </svg>
+              <strong>{icon.name}</strong>
+            </article>
           ))}
         </div>
         <div className="skill-split">
