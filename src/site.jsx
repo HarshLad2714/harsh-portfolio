@@ -1,14 +1,53 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   ArrowUpRight,
+  Atom,
+  Bot,
+  Boxes,
+  Braces,
+  Cloud,
+  Code,
+  CodeXml,
+  Component,
+  Container,
+  Database,
   Download,
+  Droplets,
+  FileCode,
   FileText,
+  Flame,
+  FolderGit2,
+  GitBranch,
+  GitMerge,
   GraduationCap,
+  Kanban,
+  Layers,
+  ListChecks,
+  LockKeyhole,
   Mail,
   MapPin,
   Menu,
+  MessageSquare,
+  MousePointer2,
+  MousePointerClick,
+  Orbit,
+  Palette,
   Phone,
+  Rocket,
+  Server,
+  Share2,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  Sparkles,
+  SquareKanban,
+  Table,
+  Terminal,
+  WandSparkles,
+  Workflow,
+  Wrench,
   X,
+  Zap,
 } from "lucide-react"
 import {
   experience,
@@ -23,6 +62,86 @@ import {
   ticker,
 } from "./data"
 import { techIcons } from "./techIcons"
+
+const groupMeta = {
+  Engineering: { icon: Wrench, note: "The stack I ship with" },
+  "Frontend & full stack": { icon: Component, note: "Interfaces and the full path" },
+  Delivery: { icon: Rocket, note: "How the work leaves the repo" },
+  "Cloud & security": { icon: Shield, note: "Where it runs, and how it stays safe" },
+  "AI in the workflow": { icon: Sparkles, note: "Tools beside the editor" },
+}
+
+const toolIcons = {
+  PHP: Code,
+  "Laravel 5–12": Boxes,
+  CodeIgniter: Flame,
+  "REST APIs": Braces,
+  MySQL: Database,
+  PostgreSQL: Database,
+  MongoDB: Database,
+  "Database design": Table,
+  JavaScript: FileCode,
+  jQuery: CodeXml,
+  "HTML & CSS": Palette,
+  "Vue.js": Component,
+  "React.js": Atom,
+  "Node.js": Server,
+  MERN: Layers,
+  Python: Terminal,
+  GitHub: FolderGit2,
+  GitLab: GitBranch,
+  Bitbucket: GitMerge,
+  Gitpod: Cloud,
+  Jira: Kanban,
+  Asana: ListChecks,
+  ClickUp: MousePointerClick,
+  Trello: SquareKanban,
+  Docker: Container,
+  AWS: Cloud,
+  DigitalOcean: Droplets,
+  VPS: Server,
+  "Shared hosting": Share2,
+  SSL: LockKeyhole,
+  Firewall: ShieldCheck,
+  "CI/CD": Workflow,
+  OWASP: ShieldAlert,
+  Cursor: MousePointer2,
+  "GitHub Copilot": WandSparkles,
+  Claude: MessageSquare,
+  ChatGPT: Bot,
+  Grok: Zap,
+  "Google Antigravity": Orbit,
+}
+
+function LogoTile({ icon, clone = false }) {
+  return (
+    <article
+      className={`skill-tile${clone ? " is-clone" : ""}`}
+      style={{ "--brand": icon.color }}
+      aria-label={clone ? undefined : icon.name}
+      aria-hidden={clone || undefined}
+    >
+      <svg className="tech-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d={icon.path} />
+      </svg>
+    </article>
+  )
+}
+
+function LogoWall() {
+  return (
+    <div className="logo-wall" aria-label="Technologies">
+      <div className="logo-lane-track">
+        {techIcons.map((icon) => (
+          <LogoTile icon={icon} key={icon.name} />
+        ))}
+        {techIcons.map((icon) => (
+          <LogoTile icon={icon} clone key={`${icon.name}-clone`} />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function GitHubIcon() {
   return (
@@ -533,16 +652,7 @@ export function Skills() {
           </div>
           <p>Laravel is home. Around it: the data, the frontend, the servers, and the tools the team already lives in.</p>
         </Reveal>
-        <div className="tile-grid">
-          {techIcons.map((icon) => (
-            <article className="skill-tile" key={icon.name} style={{ "--brand": icon.color }}>
-              <svg className="tech-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d={icon.path} />
-              </svg>
-              <strong>{icon.name}</strong>
-            </article>
-          ))}
-        </div>
+        <LogoWall />
         <div className="skill-split">
           <Reveal className="split-card from-left">
             <p className="kicker">How I lead</p>
@@ -565,23 +675,38 @@ export function Skills() {
           </Reveal>
         </div>
         <div className="skill-grid">
-          {skillGroups.map((group, index) => (
+          {skillGroups.map((group, index) => {
+            const GroupIcon = groupMeta[group.title].icon
+            return (
             <Reveal
               as="article"
               className={`skill-card ${group.lead ? "lead" : ""}`}
               delay={index * 60}
               key={group.title}
             >
-              <h3>{group.title}</h3>
-              <div className="pills">
-                {group.items.map((item) => (
-                  <span className="pill" key={item}>
-                    {item}
-                  </span>
-                ))}
+              <div className="tool-head">
+                <span className="tool-mark" aria-hidden="true">
+                  <GroupIcon size={18} strokeWidth={1.75} />
+                </span>
+                <div>
+                  <h3>{group.title}</h3>
+                  <p>{groupMeta[group.title].note}</p>
+                </div>
+              </div>
+              <div className="tools">
+                {group.items.map((item) => {
+                  const ToolIcon = toolIcons[item]
+                  return (
+                    <span className="tool" key={item}>
+                      {ToolIcon && <ToolIcon size={15} strokeWidth={1.75} aria-hidden="true" />}
+                      {item}
+                    </span>
+                  )
+                })}
               </div>
             </Reveal>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
@@ -766,8 +891,10 @@ export function Community() {
             <h3>
               <FileText size={18} aria-hidden="true" /> Multi Model Biometrics Data Retrieval Through: Big-Data
             </h3>
-            <p>Research paper. Happy to share the PDF with hiring teams.</p>
-            <a href={`mailto:${profile.email}?subject=Research%20paper%20request`}>Request the PDF</a>
+            <p>Research paper, published on IJTSRD.</p>
+            <a href="/documents/ijtsrd15933.pdf" download="Multi-Model-Biometrics-Data-Retrieval.pdf">
+              Download the PDF
+            </a>
           </Reveal>
           <Reveal as="article" className="info-card" delay={80}>
             <p className="kicker">Education</p>
@@ -879,8 +1006,8 @@ export function Contact() {
         <Reveal delay={80}>
           {status === "sent" ? (
             <div className="form success">
-              <h3>Message received.</h3>
-              <p>I will reply at {form.email}.</p>
+              <h3>Message sent.</h3>
+              <p>It is on its way to my inbox. I will reply at {form.email}.</p>
             </div>
           ) : (
             <form className="form" name="contact" method="POST" onSubmit={onSubmit}>

@@ -110,6 +110,7 @@ export const skillGroups = [
       "REST APIs",
       "MySQL",
       "PostgreSQL",
+      "MongoDB",
       "Database design",
       "JavaScript",
       "jQuery",
